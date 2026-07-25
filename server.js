@@ -1,72 +1,50 @@
-import express from 'express';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
+import { testConnection } from "./src/models/db.js";
+import routes from "./src/routes.js";
 
-// Define the application environment
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+const app = express();
 
-// Define the port number the server will listen on
 const PORT = process.env.PORT || 3000;
+
+const NODE_ENV =
+  process.env.NODE_ENV?.toLowerCase() || "production";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
+app.use(express.static(path.join(__dirname, "public")));
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "src/views"));
 
-/**
-  * Configure Express middleware
-  */
+app.use("/", routes);
 
-// Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Set EJS as the templating engine
-app.set('view engine', 'ejs');
-
-// Tell Express where to find your templates
-app.set('views', path.join(__dirname, 'src/views'));
-
-/**
- * Routes
- */
-app.get('/', async (req, res) => {
-    const title = 'Home';
-    res.render('home', { title });
+// 404 page
+app.use((req, res) => {
+  res.status(404).render("404", {
+    title: "Page Not Found"
+  });
 });
 
-app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    const title = 'Our Partner Organizations';
+// 500 page
+app.use((err, req, res, next) => {
+  console.error(err);
 
-    res.render('organizations', { title, organizations });
-});
-
-app.get('/projects', async (req, res) => {
-    const projects = await getAllProjects();
-    const title = 'Service Projects';
-
-    res.render('projects', { title, projects });
-});
-
-app.get('/categories', async (req, res) => {
-    const categories = await getAllCategories();
-    const title = 'Service Project Categories';
-
-    res.render('categories', { title, categories });
+  res.status(500).render("500", {
+    title: "Server Error"
+  });
 });
 
 app.listen(PORT, async () => {
   try {
     await testConnection();
-    console.log(`Server is running at http://127.0.0.1:${PORT}`);
+
+    console.log(`Server running on port ${PORT}`);
     console.log(`Environment: ${NODE_ENV}`);
   } catch (error) {
-    console.error('Error connecting to the database:', error);
+    console.error(error);
   }
 });
