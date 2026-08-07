@@ -1,0 +1,31 @@
+<%- include("partials/header") %>
+
+    <main>
+
+        <h1>New Category</h1>
+
+        <% if (typeof error !=="undefined" && error) { %>
+        
+            <p class="error-message">
+                <%= error %>
+            </p>
+        
+            <% } %>
+
+        <form action="/new-category" method="POST">
+
+            <label for="name">
+                Category Name
+            </label>
+
+            <input id="name" name="name" type="text" value="<%= typeof name !== 'undefined' ? name : '' %>" required
+                maxlength="100">
+            <button type="submit">
+                Create Category
+            </button>
+
+        </form>
+
+    </main>
+
+    <%- include("partials/footer") %>

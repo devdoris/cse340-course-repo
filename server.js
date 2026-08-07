@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import session from "express-session";
 
 import { testConnection } from "./src/models/db.js";
 import routes from "./src/routes.js";
@@ -15,7 +16,28 @@ const NODE_ENV =
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
+
+// Parse form data (req.body)
+app.use(express.urlencoded({ extended: true }));
+
+// Sessions
+app.use(
+  session({
+    secret: "mySecretKey",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.message = req.session.message;
+
+  delete req.session.message;
+
+  next();
+});
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));

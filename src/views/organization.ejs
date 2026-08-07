@@ -2,9 +2,21 @@
 
     <main>
 
+        <% if (message) { %>
+        
+            <p class="success-message">
+                <%= message %>
+            </p>
+        
+            <% } %>
+
         <h1>
             <%= organizationDetails.name %>
         </h1>
+
+        <a href="/edit-organization/<%= organizationDetails.organization_id %>">
+            Edit Organization
+        </a>
 
         <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %>">
 
