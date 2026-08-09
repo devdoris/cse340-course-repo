@@ -6,6 +6,12 @@
             <%= category.name %>
         </h1>
 
+        <% if (message) { %>
+            <p class="flash-message">
+                <%= message %>
+            </p>
+            <% } %>
+
         <a href="/edit-category/<%= category.category_id %>">
             Edit Category
         </a>

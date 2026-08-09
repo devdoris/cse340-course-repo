@@ -12,6 +12,8 @@ import {
   getProjectDetails
 } from "../models/projects.js";
 
+import { validationResult } from "express-validator";
+
 const showCategoriesPage = async (req, res) => {
   const categories =
     await getAllCategories();
@@ -76,6 +78,9 @@ const processAssignCategoriesForm = async (req, res) => {
     categoryIds
   );
 
+  req.session.message =
+  "Categories updated successfully.";
+
   res.redirect(`/project/${projectId}`);
 };
 
@@ -88,23 +93,22 @@ const showNewCategoryForm = (req, res) => {
 
 // Process the new category form
 const processNewCategoryForm = async (req, res) => {
-  const { name } = req.body;
+  const errors = validationResult(req);
 
-  const trimmedName = name.trim();
+  if (!errors.isEmpty()) {
+    return res.status(400).render("new-category", {
+      title: "New Category",
+      error: errors.array()[0].msg,
+      name: req.body.name
+    });
+  }
 
-  if (
-  trimmedName.length < 3 ||
-  trimmedName.length > 100
-) {
-  return res.status(400).render("new-category", {
-    title: "New Category",
-    error:
-      "Category name must be between 3 and 100 characters.",
-    name: trimmedName
-  });
-}
+  const name = req.body.name.trim();
 
   await createCategory(name);
+
+  req.session.message =
+  "Category created successfully.";
 
   res.redirect("/categories");
 };
@@ -125,32 +129,32 @@ const showEditCategoryForm = async (req, res) => {
 // Process the edit category form
 const processEditCategoryForm = async (req, res) => {
   const categoryId = req.params.id;
-
   const { name } = req.body;
 
-  const trimmedName = name.trim();
+  const errors = validationResult(req);
 
-  if (
-  trimmedName.length < 3 ||
-  trimmedName.length > 100
-) {
-  const category =
-    await getCategoryDetails(categoryId);
+  if (!errors.isEmpty()) {
+    const category =
+      await getCategoryDetails(categoryId);
 
-  category.name = trimmedName;
+    category.name = req.body.name;
 
-  return res.status(400).render("edit-category", {
-    title: "Edit Category",
-    category,
-    error:
-      "Category name must be between 3 and 100 characters."
-  });
-}
+    return res.status(400).render("edit-category", {
+      title: "Edit Category",
+      category,
+      error: errors.array()[0].msg
+    });
+  }
+
+  const trimmedName = req.body.name.trim();
 
   await updateCategory(
-  categoryId,
-  trimmedName
-);
+    categoryId,
+    trimmedName
+  );
+
+  req.session.message =
+  "Category updated successfully.";
 
   res.redirect(`/category/${categoryId}`);
 };

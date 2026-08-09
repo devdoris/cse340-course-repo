@@ -6,7 +6,17 @@
             <%= title %>
         </h1>
 
-        <p>Here are our partner organizations.</p>
+        <h2>Here are our partner organizations.</h2>
+
+        <% if (message) { %>
+            <p class="flash-message">
+                <%= message %>
+            </p>
+            <% } %>
+
+        <a href="/new-organization" class="btn">
+            Create New Organization
+        </a>
 
         <ul>
 
@@ -14,7 +24,7 @@
 
                 <li>
 
-                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    <img class="organization-logo" src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
 
                     <h2>
 

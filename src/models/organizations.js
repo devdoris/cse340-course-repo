@@ -59,8 +59,33 @@ const updateOrganization = async (
   ]);
 };
 
+const createOrganization = async (
+  name,
+  description,
+  contactEmail,
+  logoFilename
+) => {
+  const sql = `
+    INSERT INTO organization (
+      name,
+      description,
+      contact_email,
+      logo_filename
+    )
+    VALUES ($1, $2, $3, $4);
+  `;
+
+  await db.query(sql, [
+    name,
+    description,
+    contactEmail,
+    logoFilename
+  ]);
+};
+
 export {
   getAllOrganizations,
   getOrganizationDetails,
-  updateOrganization
+  updateOrganization,
+  createOrganization
 };

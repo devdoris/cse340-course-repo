@@ -6,6 +6,16 @@
             <%= title %>
         </h1>
 
+        <% if (message) { %>
+            <p class="flash-message">
+                <%= message %>
+            </p>
+            <% } %>
+
+        <a href="/new-project" class="btn">
+            Create New Project
+        </a>
+
         <ul>
 
             <% projects.forEach(project=> { %>

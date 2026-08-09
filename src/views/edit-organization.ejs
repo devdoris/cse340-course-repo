@@ -4,31 +4,43 @@
 
         <h1>Edit Organization</h1>
 
-        <form action="/edit-organization/<%= organizationDetails.organization_id %>" method="POST">
+        <% if (errors && errors.length> 0) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
 
-            <label for="name">Organization Name</label>
+                <form action="/edit-organization/<%= organizationDetails.organization_id %>" method="POST">
 
-            <input id="name" name="name" type="text" required maxlength="150" value="<%= organizationDetails.name %>">
+                    <label for="name">Organization Name</label>
 
-            <label for="description">Description</label>
+                    <input id="name" name="name" type="text" required maxlength="150"
+                        value="<%= organizationDetails.name %>">
 
-            <textarea id="description" name="description" required><%= organizationDetails.description %></textarea>
+                    <label for="description">Description</label>
 
-            <label for="contactEmail">Contact Email</label>
+                    <textarea id="description" name="description"
+                        required><%= organizationDetails.description %></textarea>
 
-            <input id="contactEmail" name="contactEmail" type="email" required
-                value="<%= organizationDetails.contact_email %>">
+                    <label for="contactEmail">Contact Email</label>
 
-            <label for="logoFilename">Logo Filename</label>
+                    <input id="contactEmail" name="contactEmail" type="email" required maxlength="255"
+                        value="<%= organizationDetails.contact_email %>">
 
-            <input id="logoFilename" name="logoFilename" type="text" required
-                value="<%= organizationDetails.logo_filename %>">
+                    <label for="logoFilename">Logo Filename</label>
 
-            <button type="submit">
-                Update Organization
-            </button>
+                    <input id="logoFilename" name="logoFilename" type="text" required maxlength="255"
+                        value="<%= organizationDetails.logo_filename %>">
 
-        </form>
+                    <button type="submit">
+                        Update Organization
+                    </button>
+
+                </form>
 
     </main>
 

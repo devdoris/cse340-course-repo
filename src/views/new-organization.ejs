@@ -1,0 +1,46 @@
+<%- include("partials/header") %>
+
+    <main>
+
+        <h1>New Organization</h1>
+
+        <% if (errors.length> 0) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <form action="/new-organization" method="POST">
+
+                    <label for="name">
+                        Organization Name
+                    </label>
+
+                    <input id="name" name="name" type="text" required maxlength="150" value="<%= name || '' %>">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea id="description" name="description" required><%= description || '' %></textarea>
+
+                    <label for="contactEmail">
+                        Contact Email
+                    </label>
+
+                    <input id="contactEmail" name="contactEmail" type="email" required maxlength="255"
+                        value="<%= contactEmail || '' %>">
+
+                    <button type="submit">
+                        Create Organization
+                    </button>
+
+                </form>
+
+    </main>
+
+    <%- include("partials/footer") %>

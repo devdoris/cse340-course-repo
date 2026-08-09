@@ -1,8 +1,11 @@
 import {
   getAllOrganizations,
   getOrganizationDetails,
-  updateOrganization
+  updateOrganization,
+  createOrganization
 } from "../models/organizations.js";
+
+import { validationResult } from "express-validator";
 
 import {
   getProjectsByOrganizationId
@@ -42,13 +45,62 @@ const showEditOrganizationForm = async (req, res) => {
 
   res.render("edit-organization", {
     title: "Edit Organization",
-    organizationDetails
+    organizationDetails,
+    errors: []
   });
+};
+
+// Display the new organization form
+const showNewOrganizationForm = (req, res) => {
+  res.render("new-organization", {
+    title: "New Organization",
+    errors: [],
+    name: "",
+    description: "",
+    contactEmail: ""
+  });
+};
+
+// Process the new organization form
+const processNewOrganizationForm = async (req, res) => {
+  const errors = validationResult(req);
+
+  const {
+    name,
+    description,
+    contactEmail
+  } = req.body;
+
+  if (!errors.isEmpty()) {
+    return res.status(400).render("new-organization", {
+      title: "New Organization",
+      errors: errors.array(),
+      name,
+      description,
+      contactEmail
+    });
+  }
+
+  const logoFilename = "generic-logo.png";
+
+  await createOrganization(
+    name,
+    description,
+    contactEmail,
+    logoFilename
+  );
+
+  req.session.message =
+    "Organization created successfully.";
+
+  res.redirect("/organizations");
 };
 
 // Process the edit organization form
 const processEditOrganizationForm = async (req, res) => {
   const organizationId = req.params.id;
+
+  const errors = validationResult(req);
 
   const {
     name,
@@ -56,6 +108,21 @@ const processEditOrganizationForm = async (req, res) => {
     contactEmail,
     logoFilename
   } = req.body;
+
+  if (!errors.isEmpty()) {
+    const organizationDetails =
+      await getOrganizationDetails(organizationId);
+
+    organizationDetails.name = name;
+    organizationDetails.description = description;
+    organizationDetails.contact_email = contactEmail;
+
+    return res.status(400).render("edit-organization", {
+      title: "Edit Organization",
+      organizationDetails,
+      errors: errors.array()
+    });
+  }
 
   await updateOrganization(
     organizationId,
@@ -66,7 +133,7 @@ const processEditOrganizationForm = async (req, res) => {
   );
 
   req.session.message =
-  "Organization updated successfully.";
+    "Organization updated successfully.";
 
   res.redirect(`/organization/${organizationId}`);
 };
@@ -74,6 +141,8 @@ const processEditOrganizationForm = async (req, res) => {
 export {
   showOrganizationsPage,
   showOrganizationDetailsPage,
+  showNewOrganizationForm,
+  processNewOrganizationForm,
   showEditOrganizationForm,
   processEditOrganizationForm
 };

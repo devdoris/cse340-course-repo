@@ -113,10 +113,38 @@ const updateProject = async (
   ]);
 };
 
+const createProject = async (
+  organizationId,
+  title,
+  description,
+  location,
+  projectDate
+) => {
+  const sql = `
+    INSERT INTO project (
+      organization_id,
+      title,
+      description,
+      location,
+      project_date
+    )
+    VALUES ($1, $2, $3, $4, $5);
+  `;
+
+  await db.query(sql, [
+    organizationId,
+    title,
+    description,
+    location,
+    projectDate
+  ]);
+};
+
 export {
   getAllProjects,
   getUpcomingProjects,
   getProjectDetails,
   getProjectsByOrganizationId,
-  updateProject
+  updateProject,
+  createProject
 };

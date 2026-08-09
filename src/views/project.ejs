@@ -6,11 +6,17 @@
             <%= project.title %>
         </h1>
 
-        <a href="/edit-project/<%= project.project_id %>">
+        <% if (message) { %>
+            <p class="flash-message">
+                <%= message %>
+            </p>
+            <% } %>
+
+        <a href="/edit-project/<%= project.project_id %>" class="btn">
             Edit Project
         </a>
         
-        <a href="/assign-categories/<%= project.project_id %>">
+        <a href="/assign-categories/<%= project.project_id %>" class="btn">
             Edit Categories
         </a>
 

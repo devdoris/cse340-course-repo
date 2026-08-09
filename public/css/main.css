@@ -83,6 +83,15 @@ img {
     border-radius: 8px;
 }
 
+.organization-logo {
+    width: 150px;
+    height: 150px;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 20px auto;
+    border-radius: 8px;
+}
+
 ul {
     padding-left: 20px;
 }
@@ -105,8 +114,18 @@ ul {
     transform: translateX(6px);
 }
 
+.flash-message {
+    color: #166534;
+    background-color: #dcfce7;
+    border: 1px solid #86efac;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+}
+
 button,
 .btn {
+    display: inline-block;
     background: #0066cc;
     color: white;
     border: none;
@@ -114,6 +133,8 @@ button,
     border-radius: 6px;
     cursor: pointer;
     font-size: 1rem;
+    font-family: inherit;
+    text-decoration: none;
     transition: background 0.3s ease;
 }
 

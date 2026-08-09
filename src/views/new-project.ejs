@@ -1,0 +1,65 @@
+<%- include("partials/header") %>
+
+    <main>
+
+        <h1>New Project</h1>
+
+        <% if (errors && errors.length> 0) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
+                <form action="/new-project" method="POST">
+
+                    <label for="organizationId">
+                        Organization
+                    </label>
+                    
+                    <select id="organizationId" name="organizationId" required>
+                        <option value="">Select an organization</option>
+                    
+                        <% organizations.forEach(organization=> { %>
+                            <option value="<%= organization.organization_id %>">
+                                <%= organization.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+
+                    <label for="title">
+                        Project Title
+                    </label>
+                    
+                    <input id="title" name="title" type="text" required maxlength="150">
+                    
+                    <label for="description">
+                        Description
+                    </label>
+                    
+                    <textarea id="description" name="description" required></textarea>
+                    
+                    <label for="location">
+                        Location
+                    </label>
+                    
+                    <input id="location" name="location" type="text" required maxlength="100">
+                    
+                    <label for="projectDate">
+                        Project Date
+                    </label>
+                    
+                    <input id="projectDate" name="projectDate" type="date" required value="<%= project?.project_date || '' %>">
+
+                    <button type="submit">
+                        Create Project
+                    </button>
+
+                </form>
+
+    </main>
+
+    <%- include("partials/footer") %>

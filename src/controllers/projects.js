@@ -1,8 +1,11 @@
 import {
   getUpcomingProjects,
   getProjectDetails,
-  updateProject
+  updateProject,
+  createProject
 } from "../models/projects.js";
+
+import { validationResult } from "express-validator";
 
 import {
   getCategoriesByProject
@@ -22,6 +25,65 @@ const showProjectsPage = async (req, res) => {
     title: "Upcoming Service Projects",
     projects
   });
+};
+
+// Display the new project form
+const showNewProjectForm = async (req, res) => {
+  const organizations = await getAllOrganizations();
+
+  const today = new Date().toISOString().split("T")[0];
+
+  res.render("new-project", {
+    title: "New Project",
+    organizations,
+    errors: [],
+    project: {
+      project_date: today
+    }
+  });
+};
+
+// Process the new project form
+const processNewProjectForm = async (req, res) => {
+  const errors = validationResult(req);
+
+  const {
+    organizationId,
+    title,
+    description,
+    location,
+    projectDate
+  } = req.body;
+
+  if (!errors.isEmpty()) {
+    const organizations = await getAllOrganizations();
+
+    return res.status(400).render("new-project", {
+      title: "New Project",
+      organizations,
+      errors: errors.array(),
+      project: {
+        organization_id: organizationId,
+        title,
+        description,
+        location,
+        project_date: projectDate
+      }
+    });
+  }
+
+  await createProject(
+    organizationId,
+    title,
+    description,
+    location,
+    projectDate
+  );
+
+  req.session.message =
+    "Project created successfully.";
+
+  res.redirect("/projects");
 };
 
 const showProjectDetailsPage = async (req, res) => {
@@ -61,6 +123,8 @@ const showEditProjectForm = async (req, res) => {
 const processEditProjectForm = async (req, res) => {
   const projectId = req.params.id;
 
+  const errors = validationResult(req);
+
   const {
     organizationId,
     title,
@@ -68,6 +132,26 @@ const processEditProjectForm = async (req, res) => {
     location,
     projectDate
   } = req.body;
+
+  if (!errors.isEmpty()) {
+    const project = {
+      project_id: projectId,
+      organization_id: organizationId,
+      title,
+      description,
+      location,
+      project_date: projectDate
+    };
+
+    const organizations = await getAllOrganizations();
+
+    return res.status(400).render("edit-project", {
+      title: "Edit Project",
+      project,
+      organizations,
+      errors: errors.array()
+    });
+  }
 
   await updateProject(
     projectId,
@@ -78,12 +162,17 @@ const processEditProjectForm = async (req, res) => {
     projectDate
   );
 
+  req.session.message =
+    "Project updated successfully.";
+
   res.redirect(`/project/${projectId}`);
 };
 
 export {
   showProjectsPage,
   showProjectDetailsPage,
+  showNewProjectForm,
+  processNewProjectForm,
   showEditProjectForm,
   processEditProjectForm
 };
