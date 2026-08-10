@@ -4,6 +4,16 @@
 
         <h1>Edit Project</h1>
 
+        <% if (errors && errors.length> 0) { %>
+            <ul>
+                <% errors.forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
+
         <form action="/edit-project/<%= project.project_id %>" method="POST">
 
             <label for="title">Project Title</label>
@@ -12,17 +22,15 @@
 
             <label for="description">Description</label>
 
-            <textarea id="description" name="description" required><%= project.description %></textarea>
+            <textarea id="description" name="description" required maxlength="1000"><%= project.description %></textarea>
 
             <label for="location">Location</label>
 
-            <input id="location" name="location" type="text" required value="<%= project.location %>">
+            <input id="location" name="location" type="text" required maxlength="100" value="<%= project.location %>">
 
             <label for="projectDate">Project Date</label>
-
-            <input id="projectDate" name="projectDate" type="date" required
-                value="<%= project.project_date.toISOString().split('T')[0] %>"
-            >
+            
+            <input id="projectDate" name="projectDate" type="date" required value="<%= projectDate %>">
 
             <label for="organizationId">Organization</label>
 
@@ -31,7 +39,7 @@
                 <% organizations.forEach(organization=> { %>
 
                     <option value="<%= organization.organization_id %>"
-                        <%=organization.organization_id===project.organization_id ? "selected" : "" %>
+                        <%=String(organization.organization_id)===String(project.organization_id) ? "selected" : "" %>
                         >
                         <%= organization.name %>
                     </option>

@@ -112,11 +112,18 @@ const showEditProjectForm = async (req, res) => {
   const organizations =
     await getAllOrganizations();
 
+  const projectDate =
+    project.project_date instanceof Date
+      ? project.project_date.toISOString().split("T")[0]
+      : String(project.project_date).split("T")[0];
+
   res.render("edit-project", {
-    title: "Edit Project",
-    project,
-    organizations
-  });
+  title: "Edit Project",
+  project,
+  projectDate,
+  organizations,
+  errors: []
+});
 };
 
 // Process the edit project form
@@ -134,24 +141,23 @@ const processEditProjectForm = async (req, res) => {
   } = req.body;
 
   if (!errors.isEmpty()) {
-    const project = {
-      project_id: projectId,
-      organization_id: organizationId,
-      title,
-      description,
-      location,
-      project_date: projectDate
-    };
+  const project = await getProjectDetails(projectId);
+  const organizations = await getAllOrganizations();
 
-    const organizations = await getAllOrganizations();
+  project.organization_id = organizationId;
+  project.title = title;
+  project.description = description;
+  project.location = location;
+  project.project_date = projectDate;
 
-    return res.status(400).render("edit-project", {
-      title: "Edit Project",
-      project,
-      organizations,
-      errors: errors.array()
-    });
-  }
+  return res.status(400).render("edit-project", {
+    title: "Edit Project",
+    project,
+    projectDate: projectDate || "",
+    organizations,
+    errors: errors.array()
+  });
+}
 
   await updateProject(
     projectId,
