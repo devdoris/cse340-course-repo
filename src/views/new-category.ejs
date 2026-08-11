@@ -18,7 +18,7 @@
                 Category Name
             </label>
 
-            <input id="name" name="name" type="text" value="<%= typeof name !== 'undefined' ? name : '' %>" required
+            <input id="name" name="name" type="text" value="<%= typeof name !== 'undefined' ? name : '' %>" required minlength="3"
                 maxlength="100">
             <button type="submit">
                 Create Category

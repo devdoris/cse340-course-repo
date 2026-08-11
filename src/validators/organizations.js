@@ -5,8 +5,8 @@ const organizationValidation = [
     .trim()
     .notEmpty()
     .withMessage("Organization name is required.")
-    .isLength({ max: 150 })
-    .withMessage("Organization name must not exceed 150 characters."),
+    .isLength({ min: 3, max: 150 })
+    .withMessage("Organization name must be between 3 and 150 characters."),
 
   body("description")
     .trim()
@@ -28,7 +28,7 @@ const editOrganizationValidation = [
     .trim()
     .notEmpty()
     .withMessage("Organization name is required.")
-    .isLength({ max: 150 })
+    .isLength({ min: 3, max: 150 })
     .withMessage("Organization name must not exceed 150 characters."),
 
   body("description")

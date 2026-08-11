@@ -6,8 +6,8 @@ const categoryValidation = [
     .notEmpty()
     .withMessage("Category name is required.")
     .bail()
-    .isLength({ max: 100 })
-    .withMessage("Category name must not exceed 100 characters.")
+    .isLength({ min: 3, max: 100 })
+    .withMessage("Category name must be between 3 and 100 characters.")
 ];
 
 export {
