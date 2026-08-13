@@ -1,0 +1,78 @@
+<%- include("partials/header") %>
+
+    <main class="register-page">
+
+        <div class="register-decoration register-decoration-left"></div>
+        <div class="register-decoration register-decoration-right"></div>
+
+        <section class="register-card">
+
+            <% if (message) { %>
+                <p class="flash-message">
+                    <%= message %>
+                </p>
+                <% } %>
+
+                    <h1>Create Your Account</h1>
+
+                    <p class="register-subtitle">
+                        Join us and get started today.
+                    </p>
+
+                    <form action="/register" method="POST" class="register-form">
+
+                        <div class="register-field">
+                            <label for="name">Name</label>
+
+                            <div class="input-wrapper">
+                                <span class="input-icon">♙</span>
+
+                                <input type="text" id="name" name="name" minlength="2" maxlength="100"
+                                    placeholder="Enter your name" required>
+                            </div>
+                        </div>
+
+                        <div class="register-field">
+                            <label for="email">Email (Username)</label>
+
+                            <div class="input-wrapper">
+                                <span class="input-icon">✉</span>
+
+                                <input type="email" id="email" name="email" maxlength="100"
+                                    placeholder="Enter your email" required>
+                            </div>
+                        </div>
+
+                        <div class="register-field">
+                            <label for="password">Password</label>
+
+                            <div class="input-wrapper">
+                                <span class="input-icon">▣</span>
+
+                                <input type="password" id="password" name="password" minlength="8" maxlength="72"
+                                    placeholder="Enter your password" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="register-button">
+                            Register
+                        </button>
+
+                    </form>
+
+                    <div class="register-or">
+                        <span></span>
+                        <p>OR</p>
+                        <span></span>
+                    </div>
+
+                    <p class="login-prompt">
+                        Already have an account?
+                        <a href="/login">Login here</a>
+                    </p>
+
+        </section>
+
+    </main>
+
+    <%- include("partials/footer") %>

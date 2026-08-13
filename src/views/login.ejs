@@ -1,0 +1,60 @@
+<%- include("partials/header") %>
+
+    <main class="register-page">
+        <div class="register-decoration register-decoration-left"></div>
+        <div class="register-decoration register-decoration-right"></div>
+
+        <section class="register-card">
+            <h1>
+                <%= title %>
+            </h1>
+            
+            <% if (message && messageType !=="success" ) { %>
+                <div class="flash-message">
+                    <%= message %>
+                </div>
+                <% } else { %>
+                    <p class="register-subtitle">
+                        Welcome back! Please enter your account details.
+                    </p>
+                    <% } %>
+
+            <form class="register-form" action="/login" method="POST">
+                <div class="register-field">
+                    <label for="email">Email (Username)</label>
+
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉</span>
+                        <input type="email" id="email" name="email" maxlength="100" required autocomplete="email" />
+                    </div>
+                </div>
+
+                <div class="register-field">
+                    <label for="password">Password</label>
+
+                    <div class="input-wrapper">
+                        <span class="input-icon">▣</span>
+                        <input type="password" id="password" name="password" maxlength="100" required
+                            autocomplete="current-password" />
+                    </div>
+                </div>
+
+                <button class="register-button" type="submit">
+                    Login
+                </button>
+            </form>
+
+            <div class="register-or">
+                <span></span>
+                <p>OR</p>
+                <span></span>
+            </div>
+
+            <p class="login-prompt">
+                Don't have an account?
+                <a href="/register">Create an account</a>
+            </p>
+        </section>
+    </main>
+
+    <%- include("partials/footer") %>

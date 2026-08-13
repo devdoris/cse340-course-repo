@@ -12,13 +12,17 @@
             </p>
             <% } %>
 
-        <a href="/edit-project/<%= project.project_id %>" class="btn">
-            Edit Project
-        </a>
+        <% if (user && user.role_name==="admin" ) { %>
+            <a href="/edit-project/<%= project.project_id %>" class="btn">
+                Edit Project
+            </a>
+            <% } %>
         
-        <a href="/assign-categories/<%= project.project_id %>" class="btn">
+        <% if (user && user.role_name==="admin" ) { %>
+            <a href="/assign-categories/<%= project.project_id %>" class="btn">
             Edit Categories
-        </a>
+            </a>
+            <% } %>
 
         <p>
             <%= project.description %>

@@ -32,11 +32,17 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.locals.message = req.session.message;
+    res.locals.message = req.session.message;
+    res.locals.messageType = req.session.messageType;
 
-  delete req.session.message;
+    delete req.session.message;
+    delete req.session.messageType;
 
-  next();
+    res.locals.isLoggedIn = !!req.session.user;
+    res.locals.user = req.session.user || null;
+    res.locals.NODE_ENV = NODE_ENV;
+
+    next();
 });
 
 app.set("view engine", "ejs");

@@ -14,9 +14,9 @@
             </p>
             <% } %>
 
-        <a href="/new-organization" class="btn">
-            Create New Organization
-        </a>
+        <% if (user && user.role_name==="admin" ) { %>
+            <a href="/new-organization" class="btn">Add New Organization</a>
+            <% } %>
 
         <ul>
 
