@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
-import { createUser, authenticateUser } from "../models/users.js";
+import {
+    createUser,
+    authenticateUser,
+    getAllUsers
+} from "../models/users.js";
 
 const showUserRegistrationForm = (req, res) => {
     res.render("register", {
@@ -126,7 +130,7 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-const requireRole = (role, pageName = "this page") => {
+const requireRole = (role, pageName = "this page", redirectPath = "/") => {
     return (req, res, next) => {
         // Check if user is logged in
         if (!req.session || !req.session.user) {
@@ -141,7 +145,7 @@ const requireRole = (role, pageName = "this page") => {
             req.session.message =
                 `You do not have permission to ${pageName}.`;
                 req.session.messageType = "error";
-            return res.redirect("/");
+            return res.redirect(redirectPath);
         }
 
         next();
@@ -158,6 +162,23 @@ const showDashboard = (req, res) => {
     });
 };
 
+const showUsersPage = async (req, res) => {
+    try {
+        const users = await getAllUsers();
+
+        res.render("users", {
+            title: "Users",
+            users
+        });
+    } catch (error) {
+        console.error("Error getting users:", error);
+
+        res.status(500).render("500", {
+            title: "Server Error"
+        });
+    }
+};
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -166,5 +187,6 @@ export {
     processLogout,
     requireLogin,
     requireRole,
-    showDashboard
+    showDashboard,
+    showUsersPage
 };

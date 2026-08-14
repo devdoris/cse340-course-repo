@@ -84,8 +84,8 @@ img {
 }
 
 .organization-logo {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     max-width: 100%;
     object-fit: contain;
     margin: 20px auto;
@@ -343,6 +343,42 @@ button:hover,
 
 .login-prompt a:hover {
     text-decoration: underline;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.users-table th,
+.users-table td {
+    padding: 0.9rem 1.2rem;
+    text-align: left;
+}
+
+.users-table th {
+    font-weight: bold;
+    border-bottom: 2px solid #7a9bbd;
+}
+
+.users-table td {
+    border-bottom: 1px solid #c5d3df;
+}
+
+.users-table th:nth-child(1),
+.users-table td:nth-child(1) {
+    width: 30%;
+}
+
+.users-table th:nth-child(2),
+.users-table td:nth-child(2) {
+    width: 45%;
+}
+
+.users-table th:nth-child(3),
+.users-table td:nth-child(3) {
+    width: 25%;
 }
 
 footer {
