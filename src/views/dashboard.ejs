@@ -7,6 +7,7 @@
 
         <p>Name: <%= name %>
         </p>
+
         <p>Username: <%= email %>
         </p>
 
@@ -15,7 +16,50 @@
                 <a href="/users" class="btn">Manage Users</a>
             </p>
             <% } %>
-            
+
+                <h2>My Volunteer Projects</h2>
+
+                <% if (volunteerProjects.length> 0) { %>
+
+                    <% volunteerProjects.forEach(project=> { %>
+
+                        <div class="category-list">
+                            <h3>
+                                <a href="/project/<%= project.project_id %>">
+                                    <%= project.title %>
+                                </a>
+                            </h3>
+
+                            <p>
+                                <strong>Organization:</strong>
+                                <%= project.organization_name %>
+                            </p>
+
+                            <p>
+                                <strong>Location:</strong>
+                                <%= project.location %>
+                            </p>
+
+                            <p>
+                                <strong>Date:</strong>
+                                <%= new Date(project.project_date).toLocaleDateString() %>
+                            </p>
+
+                            <a href="/remove-volunteer/<%= project.project_id %>" class="btn">
+                                Remove Volunteer
+                            </a>
+                        </div>
+
+                        <% }) %>
+
+                            <% } else { %>
+
+                                <p>
+                                    You are not currently volunteering for any projects.
+                                </p>
+
+                                <% } %>
+
     </main>
 
     <%- include("partials/footer") %>

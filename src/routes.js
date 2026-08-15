@@ -50,6 +50,11 @@ import {
   processEditCategoryForm
 } from "./controllers/categories.js";
 
+import {
+    processVolunteer,
+    processRemoveVolunteer
+} from "./controllers/volunteers.js";
+
 const router = express.Router();
 
 // Home
@@ -96,6 +101,18 @@ router.get("/projects", showProjectsPage);
 router.get(
   "/project/:id",
   showProjectDetailsPage
+);
+
+router.get(
+    "/volunteer/:projectId",
+    requireLogin,
+    processVolunteer
+);
+
+router.get(
+    "/remove-volunteer/:projectId",
+    requireLogin,
+    processRemoveVolunteer
 );
 
 router.get(

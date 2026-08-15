@@ -8,6 +8,10 @@ import {
 import { validationResult } from "express-validator";
 
 import {
+  isUserVolunteer
+} from "../models/volunteers.js";
+
+import {
   getCategoriesByProject
 } from "../models/categories.js";
 
@@ -95,11 +99,29 @@ const showProjectDetailsPage = async (req, res) => {
   const categories =
     await getCategoriesByProject(projectId);
 
-  res.render("project", {
+  let isVolunteer = false;
+
+  if (req.session.user) {
+    isVolunteer = await isUserVolunteer(
+      req.session.user.user_id,
+      projectId
+    );
+  }
+
+  const projectMessage = req.session.projectMessage;
+const projectMessageType = req.session.projectMessageType;
+
+delete req.session.projectMessage;
+delete req.session.projectMessageType;
+
+res.render("project", {
     title: project.title,
     project,
-    categories
-  });
+    categories,
+    isVolunteer,
+    projectMessage,
+    projectMessageType
+});
 };
 
 // Display the edit project form
